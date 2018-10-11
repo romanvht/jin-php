@@ -48,8 +48,8 @@ switch($_GET['do']){
 				$sql = $vht->prepare("INSERT INTO `pers_img` (name, img, ip, ua, hash, time) VALUES (?,?,?,?,?,?)");
 				$sql->bind_param("sssssi", $name, $foto, $myip, $myua, $myhash, time());
 				$sql->execute();
-				$id = $vht->insert_id;
-				
+				$id = $sql->insert_id;
+				$sql->close();
 				header("Location: /img.php?id=$id");
 				exit();
 			}else{

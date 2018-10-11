@@ -32,15 +32,18 @@ function isBot(){
 
 function who(){
 	global $vht;
-	$ip_on = $_SERVER['REMOTE_ADDR'];
-	$ua_on = $_SERVER['HTTP_USER_AGENT'];
+	$ip_on = in_t($_SERVER['REMOTE_ADDR']);
+	$ua_on = in_t($_SERVER['HTTP_USER_AGENT']);
 	$hash = isset($_COOKIE['hash']) ? in_t($_COOKIE['hash']) : md5($ip_on . $ua_on);
 	$_SESSION['hash'] = $hash;
 	$bot = 0;
 	if (isBot()) $bot = 1;
 	$onl = $vht->query("SELECT `id` FROM `online` WHERE `hash` = '$hash'")->num_rows;
-	if (empty($onl)) $vht->query("INSERT INTO `online`(`time`,`ip`,`ua`, `hash`, `bot`) VALUES ('" . (time() + 600) . "','" . $ip_on . "','" . $ua_on . "', '" . $hash . "', '" . $bot . "')");
-	else $vht->query("UPDATE `online` SET `time` = '" . (time() + 600) . "',  `ip` = '" . $ip_on . "', `ua` = '" . $ua_on . "', `bot` = '" . $bot . "' WHERE `hash` = '" . $hash . "'");
+	if (empty($onl)){
+		$vht->query("INSERT INTO `online`(`time`,`ip`,`ua`, `hash`, `bot`) VALUES ('" . (time() + 600) . "','" . $ip_on . "','" . $ua_on . "', '" . $hash . "', '" . $bot . "')");
+	}else{	
+		$vht->query("UPDATE `online` SET `time` = '" . (time() + 600) . "',  `ip` = '" . $ip_on . "', `ua` = '" . $ua_on . "', `bot` = '" . $bot . "' WHERE `hash` = '" . $hash . "'");
+	}
 	setcookie("hash", $hash, time() + 86400 * 365);
 	$vht->query("DELETE FROM `online` WHERE `time`< '" . time() . "'");
 	$online = $vht->query("SELECT `id` FROM `online` WHERE `bot` = '0'")->num_rows;
@@ -48,7 +51,6 @@ function who(){
 }
 
 class navigator{
-	
 	public $all = 0;
 	public $page;
 	public $start = 0;

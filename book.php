@@ -57,7 +57,7 @@ switch($_GET['do']){
 					$sql = $vht->prepare("UPDATE `book` SET `text` = ?, `otv` = ? WHERE `id` = ?");
 					$sql->bind_param("ssi", $msg, $otv, $id);
 					$sql->execute();
-					
+					$sql->close();
 					header("Location: /book.php?");
 					exit();
 				}
@@ -128,7 +128,7 @@ switch($_GET['do']){
 			$sql = $vht->prepare("INSERT INTO `book` (name, text, ip, time, ua, hash, adm) VALUES (?,?,?,?,?,?,?)");
 			$sql->bind_param("sssissi", $name, $msg, $ip, time(), $myua, $myhash, $adm);
 			$sql->execute();
-			
+			$sql->close();
 			$_SESSION['nick'] = $name;
 			header("Location: /book.php?");
 			exit();
