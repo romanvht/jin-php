@@ -3,7 +3,7 @@ include_once 'inc/db.php';
 include_once 'inc/func.php';
 include_once 'inc/head.php';
 
-	if($_SESSION[admin] == 1){
+	if($_SESSION[admin] == $admhash){
 		$cm = $vht->query("SELECT `id` FROM `pers_img` WHERE `mod` = '0'")->num_rows;
 		echo '<div class="text"><center><a href="/adminka.php">Админ панель</a> ('.$cm.')</center></div>';
 	}

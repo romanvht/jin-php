@@ -4,7 +4,7 @@ include_once 'inc/func.php';
 
 switch($_GET['do']){
 	case 'del':
-		if($_SESSION['admin'] == 1){
+		if($_SESSION['admin'] == $admhash){
 			$id = int($_GET['id']);
 			$a = $vht->query("SELECT `id` FROM `book` WHERE `id`='$id'")->fetch_assoc();
 				if(empty($a[id])){
@@ -25,7 +25,7 @@ switch($_GET['do']){
 	break;	
 			
 	case 'edit':
-	if($_SESSION['admin'] == 1){
+	if($_SESSION['admin'] == $admhash){
 		$id = int($_GET['id']);
 		$i = $vht->query("SELECT * FROM `book` WHERE `id`='$id'")->fetch_assoc();
 			if(empty($i[id])){
@@ -81,7 +81,7 @@ switch($_GET['do']){
 			$name = $a['adm'] == 0 ? $a['name'] : '<span style="color: red;">Admin</span>';
 			echo '<div class="text">';
 			echo '<img src="/style/ico/user.png"/> <b>'.$name.'</b> ['.r_time($a['time']).']<br/>'.$a['text'];
-			if($_SESSION['admin'] == 1)echo '<span style="float: right;"><a href="?do=edit&id='.$a[id].'">[изменить]</a> ==||== <a href="?do=del&id='.$a[id].'">[удалить]</a></span>';
+			if($_SESSION['admin'] == $admhash)echo '<span style="float: right;"><a href="?do=edit&id='.$a[id].'">[изменить]</a> ==||== <a href="?do=del&id='.$a[id].'">[удалить]</a></span>';
 			if(!empty($a['otv']))echo '<br/><img src="/style/ico/que.png"/> <span style="color: red;">Ответ:</span> '.$a['otv'];
 			echo '</div>';
 		}	
@@ -92,13 +92,13 @@ switch($_GET['do']){
 
 		echo'<div class="text">';
 		echo '<form action="?do=add" method="post">';
-		if($_SESSION['admin'] == 0){
+		if(!isset($_SESSION['admin']) || $_SESSION['admin'] != $admhash){
 			echo 'Ник: ';
 			echo empty($_SESSION[nick]) ? '<br/><input type="text" name="nick" value="'.in_t($_SESSION['nick']).'"><br>' : '<b>'.($_SESSION[nick]).'</b><br/>';
 		}
 		echo 'Сообщение:<br/>';    
 		echo '<textarea name="msg"></textarea><br/>';
-		if($_SESSION['admin'] == 0){
+		if(!isset($_SESSION['admin']) || $_SESSION['admin'] != $admhash){
 			echo '<img src="captha.php"/><br>';
 			echo 'Bвeдитe Koд:<br>';
 			echo '<input type="text" name="code" size="7" maxlength="6"><br/>';
@@ -117,7 +117,7 @@ switch($_GET['do']){
 		$msg = in_t($_POST[msg]);
 		$adm = 0;
 		
-		if($_SESSION['admin'] == 1)$adm = 1;
+		if($_SESSION['admin'] == $admhash)$adm = 1;
 		else {
 			if($cap != $code)$err='- Неверный код проверки!';
 			if(empty($name))$err='- Не заполнено имя!';

@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 </script>
 
 <?php
-if($_SESSION['admin'] == 1){
+if($_SESSION['admin'] == $admhash){
 	switch($_GET['adm']){
 		case 'del':
 			$id = int($_GET['id']);
@@ -76,10 +76,10 @@ if($_SESSION['admin'] == 1){
 		echo 'Дата: '.r_time($a['time']).'<br/>
 		Имя: '.$a['name'].' ('.$a['info'].')<br/>';
 		echo ($a['status'] == 'yes') ? '<span style="color: green;">Я отгадал!</span>' : '<span style="color: red;">Я не отгадал! Загадывали: </span>'.$a['text'].'<br/>';
-			if($_SESSION['admin'] == 1){
-			echo '<br/><a href="/adminka.php?do=ban&ip='.$a['ip'].'&hash='.$a['hash'].'">[Забанить]</a><br/><b>IP:</b> '.$a['ip'].'<br/><b>UA:</b> '.$a['ua'].'<br/><b>Hash:</b> '.$a['hash'].'<br/>';
-			echo '<a href="?adm=mov&id='.$a['id'].'">Изменить статус</a><br/>';
-			echo '<a href="?adm=del&id='.$a['id'].'">Удалить из истории</a><br/>';
+			if($_SESSION['admin'] == $admhash){
+				echo '<br/><a href="/adminka.php?do=ban&ip='.$a['ip'].'&hash='.$a['hash'].'">[Забанить]</a><br/><b>IP:</b> '.$a['ip'].'<br/><b>UA:</b> '.$a['ua'].'<br/><b>Hash:</b> '.$a['hash'].'<br/>';
+				echo '<a href="?adm=mov&id='.$a['id'].'">Изменить статус</a><br/>';
+				echo '<a href="?adm=del&id='.$a['id'].'">Удалить из истории</a><br/>';
 			}
 		echo '<br/><a href="/new_img.php?name='.$a['name'].'">Предложить фото</a>';
 		echo '</td></tr>';

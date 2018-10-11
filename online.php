@@ -24,7 +24,7 @@ switch($do){
 		echo '<div class="text"'.$style.'>';
 		echo '<b>IP:</b> '.$arr['ip'];
 		echo '<br/><b>UA:</b> '.$arr['ua'];
-		if($_SESSION['admin'] == 1)echo '<br/><b>Hash:</b> '.$arr['hash'];
+		if($_SESSION['admin'] == $admhash)echo '<br/><b>Hash:</b> '.$arr['hash'];
 		echo '</div>';
 	}
 	echo $n->navi();
@@ -48,7 +48,7 @@ switch($do){
 		echo '<div class="text"'.$style.'>';
 		echo '<b>IP:</b> '.$arr['ip'];
 		echo '<br/><b>UA:</b> '.$arr['ua'];
-		if($_SESSION['admin'] == 1)echo '<br/><b>Hash:</b> '.$arr['hash'];
+		if($_SESSION['admin'] == $admhash)echo '<br/><b>Hash:</b> '.$arr['hash'];
 		echo '</div>';
 	}
 	echo $n->navi();

@@ -1,17 +1,13 @@
 <?php
-/* Автор: romanvht 
- roman.vkostin@gmail.com */ 
-
 	$ban = $vht->query("SELECT * FROM `ban` WHERE `ip`='".$myip."' OR `hash`='".$myhash."'")->num_rows;
 	if(!empty($ban) && $_SERVER['PHP_SELF'] != '/ban.php')header("Location: /ban.php");
 
-	if(!empty($_COOKIE[admlogin]) && !empty($_COOKIE[admpass])){
-		if($admlogin == $_COOKIE[admlogin] && $admpass == $_COOKIE[admpass]){
-			$_SESSION[admin] = 1;
+	if(isset($_COOKIE['admhash'])){
+		if($admhash == $_COOKIE['admhash']){
+			$_SESSION['admin'] = $admhash;
 		}else{ 
-			setcookie ("admlogin", "0",time()-3600*60*30);
-			setcookie ("admpass", "0",time()-3600*60*30);
-			unset($_SESSION[admin]);
+			setcookie ("admhash", "0",time()-3600*60*30);
+			unset($_SESSION['admin']);
 		}
 	}
 
@@ -29,7 +25,6 @@
 		$control .= '<a href="'.$back_url.'" class="back_logo">Назад</a>';
 	}
 ?>
-
 	<!DOCTYPE html>
 	<html><head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />

@@ -9,3 +9,4 @@ $set = $vht->query("SELECT * FROM `setting` WHERE `id` = '1' LIMIT 1")->fetch_as
 
 $admlogin = $set['login'];
 $admpass = md5(sha1($set['pass']));
+$admhash = md5($admlogin.$admpass);

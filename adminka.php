@@ -4,40 +4,7 @@ include_once 'inc/func.php';
 
 $do = in_t($_GET['do']); 
 
-if(empty($_SESSION['admin'])){
-	switch ($do){
-		default:
-			$title = 'Админка';
-			include_once 'inc/head.php';  
-
-			echo'<div class="text">';
-			echo'<form action="?do=auth" method="post">
-			Логин:<br />
-			<input name="login" type="login" size="30" maxlength="30" /><br />
-			Пароль:<br />
-			<input name="pass" type="password" size="30" maxlength="30" /><br />
-			<input name="" type="submit" value="Войти" />
-			</form></div>';
-		break;
-
-		case 'auth':
-			setcookie ("admlogin", "$admlogin",time()+86400*30);
-			setcookie ("admpass", "$admpass",time()+86400*30);
-			$log = in_t($_POST['login']);
-			$pass = in_t($_POST['pass']);
-
-			$title = 'Админка';
-			include_once 'inc/head.php';  
-
-				if($log == $admlogin && md5(sha1($pass)) == $admpass){
-					$_SESSION['admin'] = 1;
-					echo '<div class="text">Добро пожаловать! '.$admlogin.'</div>'; 
-				}else{ 
-					echo '<div class="text">Введенный логин или пароль неверный!</div>'; 
-				}
-		break;
-	}
-}else{
+if(isset($_SESSION['admin']) && $_SESSION['admin'] == $admhash){
 		switch ($do){
 		default:
 			$title = 'Админка';
@@ -243,8 +210,7 @@ if(empty($_SESSION['admin'])){
 		break;
 
 		case 'exit':
-			setcookie ("admlogin", "0",time()-3600*60*30);
-			setcookie ("admpass", "0",time()-3600*60*30);
+			setcookie ("admhash", "0",time()-3600*60*30);
 			session_destroy();
 
 			$title = 'Админка';
@@ -253,6 +219,38 @@ if(empty($_SESSION['admin'])){
 			echo '<div class="text">Вы вышли</div>';
 		break;
 
+	}
+}else{
+	switch ($do){
+		default:
+			$title = 'Админка';
+			include_once 'inc/head.php';  
+
+			echo'<div class="text">';
+			echo'<form action="?do=auth" method="post">
+			Логин:<br />
+			<input name="login" type="login" size="30" maxlength="30" /><br />
+			Пароль:<br />
+			<input name="pass" type="password" size="30" maxlength="30" /><br />
+			<input name="" type="submit" value="Войти" />
+			</form></div>';
+		break;
+
+		case 'auth':
+			setcookie ("admhash", "$admhash",time()+86400*30);
+			$log = in_t($_POST['login']);
+			$pass = in_t($_POST['pass']);
+
+			$title = 'Админка';
+			include_once 'inc/head.php';  
+
+				if($log == $admlogin && md5(sha1($pass)) == $admpass){
+					$_SESSION['admin'] = $admhash;
+					echo '<div class="text">Добро пожаловать! '.$admlogin.'</div>'; 
+				}else{ 
+					echo '<div class="text">Введенный логин или пароль неверный!</div>'; 
+				}
+		break;
 	}
 }
 if(!empty($do))echo'<div class="menu"><a href="adminka.php">В админку</a></div>';
