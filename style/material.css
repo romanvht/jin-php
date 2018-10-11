@@ -444,12 +444,14 @@ border-spacing: 0;
 
 .popup_close.bottom_pos{
 	bottom: 0px;
+	z-index:15;
 	border-radius: 5px 5px 0px 0px;
 	cursor: pointer;
 }
 
 .popup_close.top_pos{
 	top: 0px;
+	z-index:15;
 	border-radius: 0px 0px 5px 5px;
 	cursor: pointer;
 }
@@ -457,7 +459,7 @@ border-spacing: 0;
 .popup_img {
 	position: absolute;
 	margin:0 auto;
-	z-index:2;
+	z-index:15;
 	max-height:80%;
 	max-width:90%;
 	top: 0; bottom: 0; left: 0; right: 0;
