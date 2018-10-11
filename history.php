@@ -81,7 +81,7 @@ if($_SESSION['admin'] == $admhash){
 				echo '<a href="?adm=mov&id='.$a['id'].'">Изменить статус</a><br/>';
 				echo '<a href="?adm=del&id='.$a['id'].'">Удалить из истории</a><br/>';
 			}
-		echo '<br/><a href="/new_img.php?name='.$a['name'].'">Предложить фото</a>';
+		echo '<br/><a href="/new_img.php?name='.in_url($a['name']).'">Предложить фото</a>';
 		echo '</td></tr>';
 		echo '</table></div>';
 	}	
