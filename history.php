@@ -55,7 +55,7 @@ if($_SESSION['admin'] == 1){
 					echo '<div class="text">Успешно изменено</div>';
 				}
 		break;
-}
+	}
 }
 
 	$page=intval($_GET['page']);  
