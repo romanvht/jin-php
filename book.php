@@ -54,12 +54,15 @@ switch($_GET['do']){
 					$msg = in_t($_POST['msg']);
 					$otv = in_t($_POST['otv']);
 					
-					$vht->query("UPDATE `book` SET `text` = '$msg', `otv` = '$otv' WHERE `id` = '$id'");
+					$sql = $vht->prepare("UPDATE `book` SET `text` = ?, `otv` = ? WHERE `id` = ?");
+					$sql->bind_param("ssi", $msg, $otv, $id);
+					$sql->execute();
+					
 					header("Location: /book.php?");
 					exit();
 				}
 			}
-	 }else{
+	}else{
 		 header("Location: /book.php?");
 		 exit();   
 	}
@@ -94,11 +97,11 @@ switch($_GET['do']){
             echo empty($_SESSION[nick]) ? '<br/><input type="text" name="nick" value="'.in_t($_SESSION['nick']).'"><br>' : '<b>'.($_SESSION[nick]).'</b><br/>';
         }
         echo 'Сообщение:<br/>';    
-        echo '<textarea name="msg"></textarea><br />';
+        echo '<textarea name="msg"></textarea><br/>';
         if($_SESSION['admin'] == 0){
             echo '<img src="captha.php"/><br>';
             echo 'Bвeдитe Koд:<br>';
-            echo '<input type="text" name="code" size="7" maxlength="6"><br>';
+            echo '<input type="text" name="code" size="7" maxlength="6"><br/>';
         }
         echo '<input type="submit" value="Написать">
         </form></div>';
@@ -109,22 +112,24 @@ switch($_GET['do']){
         $cap = int($_SESSION[code]);
         $code = int($_POST[code]);
         $ip = in_t($_SERVER[REMOTE_ADDR]);
-        $date = time();
+
         $name = !empty($_SESSION[nick]) ? in_t($_SESSION[nick]) : in_t($_POST[nick]);
         $msg = in_t($_POST[msg]);
         $adm = 0;
+		
         if($_SESSION['admin'] == 1)$adm = 1;
-        
-        
-         if($_SESSION['admin'] == 0){
+        else {
              if($cap != $code)$err='- Неверный код проверки!';
              if(empty($name))$err='- Не заполнено имя!';
-         }     
-         if(empty($msg))$err='- Не заполнено сообщение!';
+        }  
+        if(empty($msg))$err='- Не заполнено сообщение!';
 
         
         if(empty($err)){
-            $vht->query("INSERT INTO `book` (`name`, `text`, `ip`, `time`, `ua`, `adm`) VALUES ('$name', '$msg', '$ip', '$date', '".in_t($_SERVER['HTTP_USER_AGENT'])."', '$adm')");
+			$sql = $vht->prepare("INSERT INTO `book` (name, text, ip, time, ua, hash, adm) VALUES (?,?,?,?,?,?,?)");
+			$sql->bind_param("sssissi", $name, $msg, $ip, time(), $myua, $myhash, $adm);
+			$sql->execute();
+			
             $_SESSION['nick'] = $name;
             header("Location: /book.php?");
             exit();

@@ -114,7 +114,7 @@ if(empty($_SESSION['admin'])){
 				if($a['mod'] == '0')echo '<a href="/adminka.php?do=img&adm=yes&id='.$a['id'].'">[Принять]</a> | <span style="color: orange;">Не принято</span> | <a href="/adminka.php?do=img&adm=no&id='.$a['id'].'">[Отклонить]</a><br/>';
 				if($a['mod'] == '1')echo '<span style="color: green;">Принято</span> | <a href="/adminka.php?do=img&adm=no&id='.$a['id'].'">[Отклонить]</a><br/>';
 				if($a['mod'] == '2')echo '<span style="color: red;">Отклонено</span> | <a href="/adminka.php?do=img&adm=yes&id='.$a['id'].'">[Принять]</a><br/>';
-				echo 'IP: '.$a['ip'].' <a href="/adminka.php?do=ban&ip='.$a['ip'].'">[БАН]</a><br/>';
+				echo '<b>IP:</b> '.$a['ip'].'<br/><b>UA:</b> '.$a['ua'].'<br/><b>Hash:</b> '.$a['hash'].' <br/><a href="/adminka.php?do=ban&ip='.$a['ip'].'&hash='.$a['hash'].'">[Забанить]</a><br/>';
 				echo '<br/><a href="/adminka.php?do=img&adm=del&id='.$a['id'].'">Удалить</a><br/>';
 				echo '</td></tr>';
 				echo '</table></div>';

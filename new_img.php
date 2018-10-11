@@ -27,7 +27,6 @@ break;
 case 'add':
 	$cap = int($_SESSION[code]);
 	$code = int($_POST[code]);
-	$ip = in_t($_SERVER[REMOTE_ADDR]);
 	$date = time();
 
 	$pics = array('.jpg', '.jpeg', '.gif', '.png', '.bmp', '.JPG', '.JPEG'); 
@@ -44,10 +43,13 @@ case 'add':
 	if($cap != $code)$err='- Неверный код проверки!';
 
 	if(empty($err)){
-	$foto = 'foto/' . md5(time()) . $ext;
+		$foto = 'foto/' . md5(time()) . $ext;
 		if(copy($_FILES['file']['tmp_name'], $foto)){
-			$vht->query("INSERT INTO `pers_img` (`name`, `img`, `ip`, `time`, `mod`) VALUES ('$name', '$foto', '$ip', '$date', '0')");
+			$sql = $vht->prepare("INSERT INTO `pers_img` (name, img, ip, ua, hash, time) VALUES (?,?,?,?,?,?)");
+			$sql->bind_param("sssssi", $name, $foto, $myip, $myua, $myhash, time());
+			$sql->execute();
 			$id = $vht->insert_id;
+			
 			header("Location: /img.php?id=$id");
 			exit();
 		}else{
@@ -63,7 +65,7 @@ case 'add':
 		
 		echo'<div class="text">';
 		echo $err;
-		echo '</div><div class="menu"><a href="?name='.$name.'"><img src="/style/ico/back.png"/>  Вернуться</a></div>';
+		echo '</div><div class="menu"><a href="?name='.$name.'"><- Вернуться</a></div>';
 		include 'inc/foot.php'; 
 	}
 break;

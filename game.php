@@ -90,8 +90,12 @@ $error = false;
       $q = $vht->query("SELECT * FROM `history` ORDER BY `id` DESC LIMIT 1")->fetch_assoc();
 	  
       if($q['name'] != in_t($_SESSION['name']) && !empty($_SESSION['name'])){
-        $vht->query("INSERT INTO `history` SET `ip` = '$myip', `ua` = '$myua', `hash` = '$myhash', `name` = '".in_t($_SESSION['name'])."', `info` = '".in_t($_SESSION['info'])."', `img` = '".in_t($_SESSION['img'])."', `original` = '".in_t($_SESSION['orig_img'])."', `status` = 'yes', `time` = '".time()."'");  
-        $end_step = $step+1;
+		$sql = $vht->prepare("INSERT INTO `history` (ip, ua, hash, name, info, img, original, status, time) VALUES (?,?,?,?,?,?,?,?,?)");
+		$status = 'yes';
+		$sql->bind_param( "ssssssssi", $myip, $myua, $myhash, in_t($_SESSION['name']), in_t($_SESSION['info']), in_t($_SESSION['img']), in_t($_SESSION['orig_img']), $status, time());
+		$sql->execute();
+		
+		$end_step = $step+1;
 		$ar = game_end(int($_SESSION['pers']));
       }
 	  
@@ -150,8 +154,13 @@ $error = false;
       if(isset($_GET['pers'])){
         $name = in_t($_GET['name']);
         $q = $vht->query("SELECT * FROM `history` WHERE `ip` = '$myip' ORDER BY `id` DESC LIMIT 1")->fetch_assoc();
+		$status = 'no';
 		
-        if($q['name'] != $_SESSION['name'] && !empty($_SESSION['name']))$vht->query("INSERT INTO `history` SET `ip` = '$myip', `ua` = '$myua', `hash` = '$myhash', `name` = '".in_t($_SESSION['name'])."', `info` = '".in_t($_SESSION['info'])."', `img` = '".in_t($_SESSION['img'])."', `original` = '".in_t($_SESSION['orig_img'])."', `status` = 'no', `text` = '$name', `time` = '".time()."'");  
+        if($q['name'] != $_SESSION['name'] && !empty($_SESSION['name'])){
+			$sql = $vht->prepare("INSERT INTO `history` (ip, ua, hash, name, info, img, original, status, text, time) VALUES (?,?,?,?,?,?,?,?,?,?)");
+			$sql->bind_param( "sssssssssi", $myip, $myua, $myhash, in_t($_SESSION['name']), in_t($_SESSION['info']), in_t($_SESSION['img']), in_t($_SESSION['orig_img']), $status, $name, time());
+			$sql->execute();
+		}			
         $ar = pers_sel(int($_GET['pers']));
 		
         echo '<META HTTP-EQUIV="REFRESH" CONTENT="1; URL=/game.php?start">';
@@ -164,10 +173,15 @@ $error = false;
         $name = in_t($_POST['name']);
         $desc = in_t($_POST['desc']);
 		$who = $name.' '.$desc;
+		$status = 'no';
 		
-        $ar = pers_add($name, $desc);  
         $q = $vht->query("SELECT * FROM `history` ORDER BY `id` DESC LIMIT 1")->fetch_assoc();
-        if($q['name'] != $_SESSION['name'] && !empty($_SESSION['name']))$vht->query("INSERT INTO `history` SET `ip` = '$myip', `ua` = '$myua', `hash` = '$myhash', `name` = '".in_t($_SESSION['name'])."', `info` = '".in_t($_SESSION['info'])."', `img` = '".in_t($_SESSION['img'])."', `original` = '".in_t($_SESSION['orig_img'])."', `status` = 'no', `text` = '$who', `time` = '".time()."'");  
+        if($q['name'] != $_SESSION['name'] && !empty($_SESSION['name'])){
+			$sql = $vht->prepare("INSERT INTO `history` (ip, ua, hash, name, info, img, original, status, text, time) VALUES (?,?,?,?,?,?,?,?,?,?)");
+			$sql->bind_param( "sssssssssi", $myip, $myua, $myhash, in_t($_SESSION['name']), in_t($_SESSION['info']), in_t($_SESSION['img']), in_t($_SESSION['orig_img']), $status, $name, time());
+			$sql->execute();
+		}	
+		$ar = pers_add($name, $desc); 
 		
         echo '<META HTTP-EQUIV="REFRESH" CONTENT="1; URL=/game.php?start">';
         echo '<div class="text"><center>'.$ar['completion'].'<br/>Перенаправление</center></div>';
