@@ -19,6 +19,8 @@ while($a = $sql->fetch_assoc()){
   echo '<div class="link2">'.$i.'. <b>'.($a['status'] == 'yes' ? $a['name'] : '<span style="color: red;">'.$a['name'].'</span>').'</b> ['.r_time($a['time']).']</div>';  
   $i++;
 }
+$sql->free();
+
 echo '<a class="menu last" href="/history.php"><img src="style/ico/search.png"/> Показать всю историю...</a>';  
 $file=file('modules/anek.txt');
 $str=$file[array_rand($file)];

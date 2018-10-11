@@ -69,25 +69,25 @@ if($_SESSION['admin'] == 1){
     $sql = $vht->query("SELECT * FROM `history` ORDER BY `id` DESC ".$n->limit);	
     echo '<div class="text"><center>Сегодня загадывали: '.$today.' раз.</center></div>';
 	while($a = $sql->fetch_assoc()){
-	if($a['img'] == '//photos.clarinea.fr/BL_6_ru/600/none.jpg')$a['img'] = '/logos/none.png';
-	echo '<div class="text"><table class="noclip">';
-	echo '<tr><td width="70px" style="vertical-align: middle; text-align: center;">
-	<img class="image" style="width: 60px; border-radius: 5px;" src="'.$a['img'].'"/>
-	</td>
-	<td style="vertical-align: middle;">';
-	echo 'Дата: '.r_time($a['time']).'<br/>
-	Имя: '.$a['name'].' ('.$a['info'].')<br/>';
-	echo ($a['status'] == 'yes') ? '<span style="color: green;">Я отгадал!</span>' : '<span style="color: red;">Я не отгадал! Загадывали: </span>'.$a['text'].'<br/>';
-		if($_SESSION['admin'] == 1){
-		echo '<br/><a href="/adminka.php?do=ban&ip='.$a['ip'].'&hash='.$a['hash'].'">[Забанить]</a><br/><b>IP:</b> '.$a['ip'].'<br/><b>UA:</b> '.$a['ua'].'<br/><b>Hash:</b> '.$a['hash'].'<br/>';
-		echo '<a href="?adm=mov&id='.$a['id'].'">Изменить статус</a><br/>';
-		echo '<a href="?adm=del&id='.$a['id'].'">Удалить из истории</a><br/>';
-		}
-	echo '<br/><a href="/new_img.php?name='.$a['name'].'">Предложить фото</a>';
-	echo '</td></tr>';
-	echo '</table></div>';
-}	
-
+		if($a['img'] == '//photos.clarinea.fr/BL_6_ru/600/none.jpg')$a['img'] = '/logos/none.png';
+		echo '<div class="text"><table class="noclip">';
+		echo '<tr><td width="70px" style="vertical-align: middle; text-align: center;">
+		<img class="image" style="width: 60px; border-radius: 5px;" src="'.$a['img'].'"/>
+		</td>
+		<td style="vertical-align: middle;">';
+		echo 'Дата: '.r_time($a['time']).'<br/>
+		Имя: '.$a['name'].' ('.$a['info'].')<br/>';
+		echo ($a['status'] == 'yes') ? '<span style="color: green;">Я отгадал!</span>' : '<span style="color: red;">Я не отгадал! Загадывали: </span>'.$a['text'].'<br/>';
+			if($_SESSION['admin'] == 1){
+			echo '<br/><a href="/adminka.php?do=ban&ip='.$a['ip'].'&hash='.$a['hash'].'">[Забанить]</a><br/><b>IP:</b> '.$a['ip'].'<br/><b>UA:</b> '.$a['ua'].'<br/><b>Hash:</b> '.$a['hash'].'<br/>';
+			echo '<a href="?adm=mov&id='.$a['id'].'">Изменить статус</a><br/>';
+			echo '<a href="?adm=del&id='.$a['id'].'">Удалить из истории</a><br/>';
+			}
+		echo '<br/><a href="/new_img.php?name='.$a['name'].'">Предложить фото</a>';
+		echo '</td></tr>';
+		echo '</table></div>';
+	}	
+	$sql->free();
     echo '<center>'.$n->navi($str = true, $button = true, $form = true).'</center>';
 
 include_once 'inc/foot.php';
