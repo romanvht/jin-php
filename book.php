@@ -76,7 +76,6 @@ switch($_GET['do']){
 		$n = new navigator($count, '10', '/book.php?'.$nav);
 
 		$sql = $vht->query("SELECT * FROM `book` ORDER BY `id` DESC ".$n->limit);	
-
 		while($a = $sql->fetch_assoc()){
 			$name = $a['adm'] == 0 ? $a['name'] : '<span style="color: red;">Admin</span>';
 			echo '<div class="text">';
@@ -85,7 +84,8 @@ switch($_GET['do']){
 			if(!empty($a['otv']))echo '<br/><img src="/style/ico/que.png"/> <span style="color: red;">Ответ:</span> '.$a['otv'];
 			echo '</div>';
 		}	
-
+		$sql->free();
+		
 		if($count == 0)echo '<div class="text">Сообщений нет</div>';
 
 		echo '<center>'.$n->navi($str = true, $button = true, $form = true).'</center>';
