@@ -1,1 +1,4 @@
-Options All —Indexes 
+order allow,deny
+<Files ~ "\.(png|jpg|gif)$">
+   allow from all
+</Files>
