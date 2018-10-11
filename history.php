@@ -42,7 +42,6 @@ if($_SESSION['admin'] == 1){
 					$vht->query('DELETE FROM `history` WHERE `id` = "'.$id.'"');
 					echo '<div class="text">Успешно удалено</div>';
 				}
-
 		break;	
 
 		case 'mov':
@@ -55,19 +54,18 @@ if($_SESSION['admin'] == 1){
 					$vht->query('UPDATE `history` SET `status` = "'.$status.'" WHERE `id` = "'.$id.'"');
 					echo '<div class="text">Успешно изменено</div>';
 				}
-
 		break;
 }
 }
 
-    $page=intval($_GET['page']);  
-    $count= $vht->query("SELECT `id` FROM `history`")->num_rows;  
-    $n = new navigator($count, '10', '/history.php?'.$nav);
+	$page=intval($_GET['page']);  
+	$count= $vht->query("SELECT `id` FROM `history`")->num_rows;  
+	$n = new navigator($count, '10', '/history.php?'.$nav);
 	
 	$today = $vht->query("SELECT `id` FROM `history` WHERE `time` > '".strtotime(date("d.m.Y", time()))."' AND `time` < '".strtotime(date("d.m.Y", time()+86400))."'")->num_rows;
 	
-    $sql = $vht->query("SELECT * FROM `history` ORDER BY `id` DESC ".$n->limit);	
-    echo '<div class="text"><center>Сегодня загадывали: '.$today.' раз.</center></div>';
+	$sql = $vht->query("SELECT * FROM `history` ORDER BY `id` DESC ".$n->limit);	
+	echo '<div class="text"><center>Сегодня загадывали: '.$today.' раз.</center></div>';
 	while($a = $sql->fetch_assoc()){
 		if($a['img'] == '//photos.clarinea.fr/BL_6_ru/600/none.jpg')$a['img'] = '/logos/none.png';
 		echo '<div class="text"><table class="noclip">';
@@ -88,7 +86,7 @@ if($_SESSION['admin'] == 1){
 		echo '</table></div>';
 	}	
 	$sql->free();
-    echo '<center>'.$n->navi($str = true, $button = true, $form = true).'</center>';
+	echo '<center>'.$n->navi($str = true, $button = true, $form = true).'</center>';
 
 include_once 'inc/foot.php';
 ?>

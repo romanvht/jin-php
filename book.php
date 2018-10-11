@@ -15,17 +15,17 @@ switch($_GET['do']){
 					include_once 'inc/foot.php';
 				}else{
 					$vht->query('DELETE FROM `book` WHERE `id` = "'.$id.'"');
-						header("Location: /book.php?");
-						exit();
+					header("Location: /book.php?");
+					exit();
 				}
 		}else{
-		 header("Location: /book.php?");
-		 exit();   
+			header("Location: /book.php?");
+			exit();   
 		}
 	break;	
 			
 	case 'edit':
-	 if($_SESSION['admin'] == 1){
+	if($_SESSION['admin'] == 1){
 		$id = int($_GET['id']);
 		$i = $vht->query("SELECT * FROM `book` WHERE `id`='$id'")->fetch_assoc();
 			if(empty($i[id])){
@@ -64,83 +64,82 @@ switch($_GET['do']){
 			}
 	}else{
 		 header("Location: /book.php?");
-		 exit();   
+		 exit();
 	}
-	break;       
-    
-    default:
+	break;
+
+	default:
 		$title = 'Гостевая книга';
 		include_once 'inc/head.php';
-        $page=intval($_GET['page']);  
-        $count= $vht->query("SELECT `id` FROM `book`")->num_rows;  
-        $n = new navigator($count, '10', '/book.php?'.$nav);
-    	
-        $sql = $vht->query("SELECT * FROM `book` ORDER BY `id` DESC ".$n->limit);	
-    
-    	while($a = $sql->fetch_assoc()){
-    	    $name = $a['adm'] == 0 ? $a['name'] : '<span style="color: red;">Admin</span>';
-    	    echo '<div class="text">';
-    	    echo '<img src="/style/ico/user.png"/> <b>'.$name.'</b> ['.r_time($a['time']).']<br/>'.$a['text'];
-    	    if($_SESSION['admin'] == 1)echo '<span style="float: right;"><a href="?do=edit&id='.$a[id].'">[изменить]</a> ==||== <a href="?do=del&id='.$a[id].'">[удалить]</a></span>';
-    	    if(!empty($a['otv']))echo '<br/><img src="/style/ico/que.png"/> <span style="color: red;">Ответ:</span> '.$a['otv'];
-    	    echo '</div>';
-        }	
-        
-        if($count == 0)echo '<div class="text">Сообщений нет</div>';
-        
-        echo '<center>'.$n->navi($str = true, $button = true, $form = true).'</center>';
-    
-        echo'<div class="text">';
-        echo '<form action="?do=add" method="post">';
-        if($_SESSION['admin'] == 0){
-            echo 'Ник: ';
-            echo empty($_SESSION[nick]) ? '<br/><input type="text" name="nick" value="'.in_t($_SESSION['nick']).'"><br>' : '<b>'.($_SESSION[nick]).'</b><br/>';
-        }
-        echo 'Сообщение:<br/>';    
-        echo '<textarea name="msg"></textarea><br/>';
-        if($_SESSION['admin'] == 0){
-            echo '<img src="captha.php"/><br>';
-            echo 'Bвeдитe Koд:<br>';
-            echo '<input type="text" name="code" size="7" maxlength="6"><br/>';
-        }
-        echo '<input type="submit" value="Написать">
-        </form></div>';
-        include_once 'inc/foot.php';
-    break;
-    
-    case 'add':
-        $cap = int($_SESSION[code]);
-        $code = int($_POST[code]);
-        $ip = in_t($_SERVER[REMOTE_ADDR]);
+		$page=intval($_GET['page']);  
+		$count= $vht->query("SELECT `id` FROM `book`")->num_rows;  
+		$n = new navigator($count, '10', '/book.php?'.$nav);
 
-        $name = !empty($_SESSION[nick]) ? in_t($_SESSION[nick]) : in_t($_POST[nick]);
-        $msg = in_t($_POST[msg]);
-        $adm = 0;
+		$sql = $vht->query("SELECT * FROM `book` ORDER BY `id` DESC ".$n->limit);	
+
+		while($a = $sql->fetch_assoc()){
+			$name = $a['adm'] == 0 ? $a['name'] : '<span style="color: red;">Admin</span>';
+			echo '<div class="text">';
+			echo '<img src="/style/ico/user.png"/> <b>'.$name.'</b> ['.r_time($a['time']).']<br/>'.$a['text'];
+			if($_SESSION['admin'] == 1)echo '<span style="float: right;"><a href="?do=edit&id='.$a[id].'">[изменить]</a> ==||== <a href="?do=del&id='.$a[id].'">[удалить]</a></span>';
+			if(!empty($a['otv']))echo '<br/><img src="/style/ico/que.png"/> <span style="color: red;">Ответ:</span> '.$a['otv'];
+			echo '</div>';
+		}	
+
+		if($count == 0)echo '<div class="text">Сообщений нет</div>';
+
+		echo '<center>'.$n->navi($str = true, $button = true, $form = true).'</center>';
+
+		echo'<div class="text">';
+		echo '<form action="?do=add" method="post">';
+		if($_SESSION['admin'] == 0){
+			echo 'Ник: ';
+			echo empty($_SESSION[nick]) ? '<br/><input type="text" name="nick" value="'.in_t($_SESSION['nick']).'"><br>' : '<b>'.($_SESSION[nick]).'</b><br/>';
+		}
+		echo 'Сообщение:<br/>';    
+		echo '<textarea name="msg"></textarea><br/>';
+		if($_SESSION['admin'] == 0){
+			echo '<img src="captha.php"/><br>';
+			echo 'Bвeдитe Koд:<br>';
+			echo '<input type="text" name="code" size="7" maxlength="6"><br/>';
+		}
+		echo '<input type="submit" value="Написать">
+		</form></div>';
+		include_once 'inc/foot.php';
+	break;
+
+	case 'add':
+		$cap = int($_SESSION[code]);
+		$code = int($_POST[code]);
+		$ip = in_t($_SERVER[REMOTE_ADDR]);
+
+		$name = !empty($_SESSION[nick]) ? in_t($_SESSION[nick]) : in_t($_POST[nick]);
+		$msg = in_t($_POST[msg]);
+		$adm = 0;
 		
-        if($_SESSION['admin'] == 1)$adm = 1;
-        else {
-             if($cap != $code)$err='- Неверный код проверки!';
-             if(empty($name))$err='- Не заполнено имя!';
-        }  
-        if(empty($msg))$err='- Не заполнено сообщение!';
+		if($_SESSION['admin'] == 1)$adm = 1;
+		else {
+			if($cap != $code)$err='- Неверный код проверки!';
+			if(empty($name))$err='- Не заполнено имя!';
+		}  
+		if(empty($msg))$err='- Не заполнено сообщение!';
 
-        
-        if(empty($err)){
+		if(empty($err)){
 			$sql = $vht->prepare("INSERT INTO `book` (name, text, ip, time, ua, hash, adm) VALUES (?,?,?,?,?,?,?)");
 			$sql->bind_param("sssissi", $name, $msg, $ip, time(), $myua, $myhash, $adm);
 			$sql->execute();
 			
-            $_SESSION['nick'] = $name;
-            header("Location: /book.php?");
-            exit();
-        }else{
+			$_SESSION['nick'] = $name;
+			header("Location: /book.php?");
+			exit();
+		}else{
 			$title = 'Гостевая книга';
 			include_once 'inc/head.php';
-            echo'<div class="text">';
-            echo $err;
-            echo '</div><div class="menu"><a href="book.php"><img src="/style/ico/back.png"/>  Вернуться</a></div>';
-            include_once 'inc/foot.php';
-        }
-    break;
+			echo'<div class="text">';
+			echo $err;
+			echo '</div><div class="menu"><a href="book.php"><img src="/style/ico/back.png"/>  Вернуться</a></div>';
+			include_once 'inc/foot.php';
+		}
+	break;
 }
 ?>
