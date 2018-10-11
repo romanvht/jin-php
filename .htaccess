@@ -1,0 +1,12 @@
+php_flag display_errors off
+php_flag display_startup_errors on
+php_value default_charset utf-8
+AddType 'text/html; charset=utf-8' .html .htm .shtml
+
+<ifModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/css text/javascript application/javascript application/x-javascript
+</ifModule>
+
+<filesMatch ".(css|jpg|jpeg|png|gif|js|ico|svg|ttf)$">
+Header set Cache-Control "max-age=2592000, public"
+</filesMatch>
