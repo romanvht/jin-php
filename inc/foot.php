@@ -20,5 +20,6 @@ if($_SERVER['PHP_SELF'] != '/index.php')echo '<a class="main" href="/"><img src=
 ?> 	
 	<script src="/js/main.js?<?php echo $version; ?>"></script>
 	<center><span style="font-size: 8px">&copy; API provided by Elocence</span></center>
-	</body></html>
-	<!-- Время генерации скрипта: <?php echo $end_time ?> сек. -->
+	</body>
+	<!-- Время генерации скрипта: <?php echo $end_time ?> сек. -->	
+	</html>
