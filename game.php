@@ -130,12 +130,13 @@ switch ($do) {
 		echo '<div class="text"><center><form action="?do=no" method="post">';
 		echo 'Имя персонажа: <input type="text" value="' . $text . '" name="text" size="25"/>';
 		echo '<input name="submit" type="submit" value="Поиск"/></div>';
+		
 		if (isset($_POST['submit'])) {
 			$search = list_search($text);
 			if ($search['soundlikes'] != null) {
 				foreach($search['soundlikes'] as $key => $value) {
-					echo '<a href="?sess=' . $session . '&sig=' . $sig . '&s=' . $step . '&do=no&pers=' . $key . '&name=' . in_t($value->element->name) . '" class="menu">- <b>' . in_t($value->element->name) . '</b> / ';
-					echo in_t($value->element->description) . "</a>";
+					$name = in_url($value->element->name . ' - ' . $value->element->description);
+					echo '<a href="?do=no&pers=' . $key . '&name=' . $name . '" class="menu">- <b>' . in_t($value->element->name) . '</b> - ' . in_t($value->element->description) . "</a>";
 				}
 			}
 			else {
@@ -148,7 +149,7 @@ switch ($do) {
 			echo '<input name="addpers" type="submit" value="Сохранить"/></div>';
 		}
 
-		if (isset($_GET['pers'])) {
+		if (isset($_GET['pers']) && !empty($_GET['name'])) {
 			$name = in_t($_GET['name']);
 			$q = $vht->query("SELECT * FROM `history` WHERE `ip` = '$myip' ORDER BY `id` DESC LIMIT 1")->fetch_assoc();
 			$status = 'no';
@@ -169,12 +170,12 @@ switch ($do) {
 		if (isset($_POST['addpers'])) {
 			$name = in_t($_POST['name']);
 			$desc = in_t($_POST['desc']);
-			$who = $name . ' ' . $desc;
+			$who = $name . ' - ' . $desc;
 			$status = 'no';
 			$q = $vht->query("SELECT * FROM `history` ORDER BY `id` DESC LIMIT 1")->fetch_assoc();
 			if ($q['name'] != $_SESSION['name'] && !empty($_SESSION['name'])) {
 				$sql = $vht->prepare("INSERT INTO `history` (ip, ua, hash, name, info, img, original, status, text, time) VALUES (?,?,?,?,?,?,?,?,?,?)");
-				$sql->bind_param("sssssssssi", $myip, $myua, $myhash, in_t($_SESSION['name']) , in_t($_SESSION['info']) , in_t($_SESSION['img']) , in_t($_SESSION['orig_img']) , $status, $name, time());
+				$sql->bind_param("sssssssssi", $myip, $myua, $myhash, in_t($_SESSION['name']) , in_t($_SESSION['info']) , in_t($_SESSION['img']) , in_t($_SESSION['orig_img']) , $status, $who, time());
 				$sql->execute();
 			}
 
