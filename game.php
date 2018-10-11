@@ -92,6 +92,7 @@ switch ($do) {
 			$status = 'yes';
 			$sql->bind_param("ssssssssi", $myip, $myua, $myhash, in_t($_SESSION['name']) , in_t($_SESSION['info']) , in_t($_SESSION['img']) , in_t($_SESSION['orig_img']) , $status, time());
 			$sql->execute();
+			$sql->close();
 			$end_step = $step + 1;
 			$ar = game_end(int($_SESSION['pers']));
 		}
@@ -151,12 +152,13 @@ switch ($do) {
 
 		if (isset($_GET['pers']) && !empty($_GET['name'])) {
 			$name = in_t($_GET['name']);
-			$q = $vht->query("SELECT * FROM `history` WHERE `ip` = '$myip' ORDER BY `id` DESC LIMIT 1")->fetch_assoc();
+			$q = $vht->query("SELECT * FROM `history` ORDER BY `id` DESC LIMIT 1")->fetch_assoc();
 			$status = 'no';
 			if ($q['name'] != $_SESSION['name'] && !empty($_SESSION['name'])) {
 				$sql = $vht->prepare("INSERT INTO `history` (ip, ua, hash, name, info, img, original, status, text, time) VALUES (?,?,?,?,?,?,?,?,?,?)");
 				$sql->bind_param("sssssssssi", $myip, $myua, $myhash, in_t($_SESSION['name']) , in_t($_SESSION['info']) , in_t($_SESSION['img']) , in_t($_SESSION['orig_img']) , $status, $name, time());
 				$sql->execute();
+				$sql->close();
 			}
 
 			$ar = pers_sel(int($_GET['pers']));
@@ -177,6 +179,7 @@ switch ($do) {
 				$sql = $vht->prepare("INSERT INTO `history` (ip, ua, hash, name, info, img, original, status, text, time) VALUES (?,?,?,?,?,?,?,?,?,?)");
 				$sql->bind_param("sssssssssi", $myip, $myua, $myhash, in_t($_SESSION['name']) , in_t($_SESSION['info']) , in_t($_SESSION['img']) , in_t($_SESSION['orig_img']) , $status, $who, time());
 				$sql->execute();
+				$sql->close();
 			}
 
 			$ar = pers_add($name, $desc);
