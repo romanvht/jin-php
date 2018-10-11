@@ -23,3 +23,4 @@ if($_SERVER['PHP_SELF'] != '/index.php')echo '<a class="main" href="/"><img src=
 <?php
 echo '<!-- Время генерации скрипта: '.$end_time.' сек. -->';
 echo '</body></html>';
+$vht->close();
