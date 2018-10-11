@@ -33,7 +33,7 @@ body {
 	width: 100%;
 	top: 0px;
 	max-width: inherit;
-	z-index: 10;
+	z-index: 1;
 	background: url(/style/img/da.png)repeat-x top;
 	color: #A66B00;
 	padding: 17px;
