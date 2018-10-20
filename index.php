@@ -20,7 +20,7 @@ include_once 'inc/head.php';
 			$i++;
 		}
 	$sql->free();
-	echo '<a class="menu last" href="/history.php"><img src="style/ico/search.png"/> Показать всю историю...</a>';
+	echo '<a class="menu last" href="/history.php">Показать всю историю...</a>';
 
 	echo '<div class="title first"><span class="tit">Это интересно</span></div>';
 	$cb = $vht->query("SELECT `id` FROM `book`")->num_rows;
