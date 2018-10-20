@@ -29,15 +29,14 @@ include_once 'inc/head.php';
 <div class="text">
 <b>Загадано всего:</b> <?php echo $userAll[0]; ?><br/>
 <b>Загадано сегодня:</b> <?php echo $userToday[0]; ?><br/>
-<b>Отгадано:</b> <?php echo $userYes[0]; ?> (<?php echo round(100*$userYes[0]/$userAll[0]); ?>%)<br/>  
-<b>Не отгадано:</b> <?php echo $userNo[0]; ?> (<?php echo round(100*$userNo[0]/$userAll[0]); ?>%)<br/>
+<b>Отгадано:</b> <?php echo $userYes[0]; ?> (<?php echo round(int(100*$userYes[0]/$userAll[0])); ?>%)<br/>  
+<b>Не отгадано:</b> <?php echo $userNo[0]; ?> (<?php echo round(int(100*$userNo[0]/$userAll[0])); ?>%)<br/>
 </div>  
 <div class="title"><span class="tit">За всё время</span></div> 
 <div class="text">
 <b>Загадано всего:</b> <?php echo $all[0]; ?><br/>
-<b>Загадано вами:</b> <?php echo $userAll[0]; ?><br/>
-<b>Отгадано:</b> <?php echo $yes[0]; ?> (<?php echo round(100*$yes[0]/$all[0]); ?>%)<br/>  
-<b>Не отгадано:</b> <?php echo $no[0]; ?> (<?php echo round(100*$no[0]/$all[0]); ?>%)<br/>
+<b>Отгадано:</b> <?php echo $yes[0]; ?> (<?php echo round(int(100*$yes[0]/$all[0])); ?>%)<br/>  
+<b>Не отгадано:</b> <?php echo $no[0]; ?> (<?php echo round(int(100*$no[0]/$all[0])); ?>%)<br/>
 </div> 
 <?php
 include_once 'inc/foot.php';
