@@ -29,6 +29,7 @@ include_once 'inc/head.php';
 	echo '<a class="menu" href="/modules/kart.php"><img src="style/ico/kart.png"/> Магические карточки</a>';
 	echo '<a class="menu" href="/modules/temp"><img src="style/ico/user.png"/> Мой характер</a>';
 	echo '<a class="menu last" href="/modules/kvadr.php"><img src="style/ico/kvad.png"/> Магический квадрат</a>';
+	echo '<a class="menu last" href="/stat.php"><img src="style/ico/search.png"/> Статистика</a>';
 
 	echo '<div class="title first"><span class="tit">Поиграй с Джинни</span></div>';
 	echo '<a class="menu" href="http://alphabet.romanvht.ru"><img src="style/ico/alfa.png"/> Головоломка "Алфавит"</a>';
